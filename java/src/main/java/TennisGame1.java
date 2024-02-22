@@ -1,76 +1,57 @@
 
 public class TennisGame1 implements TennisGame {
-    
-    private int m_score1 = 0;
-    private int m_score2 = 0;
-    private String player1Name;
-    private String player2Name;
+    private int player1Score = 0, player2Score = 0;
+    private String player1Name, player2Name;
 
     public TennisGame1(String player1Name, String player2Name) {
         this.player1Name = player1Name;
         this.player2Name = player2Name;
     }
 
-    public void wonPoint(String playerName) {
-        if (playerName == "player1")
-            m_score1 += 1;
-        else
-            m_score2 += 1;
-    }
-
     public String getScore() {
-        String score = "";
-        int tempScore=0;
-        if (m_score1==m_score2)
-        {
-            switch (m_score1)
-            {
-                case 0:
-                        score = "Love-All";
-                    break;
-                case 1:
-                        score = "Fifteen-All";
-                    break;
-                case 2:
-                        score = "Thirty-All";
-                    break;
-                default:
-                        score = "Deuce";
-                    break;
-                
-            }
-        }
-        else if (m_score1>=4 || m_score2>=4)
-        {
-            int minusResult = m_score1-m_score2;
-            if (minusResult==1) score ="Advantage player1";
-            else if (minusResult ==-1) score ="Advantage player2";
-            else if (minusResult>=2) score = "Win for player1";
-            else score ="Win for player2";
-        }
-        else
-        {
-            for (int i=1; i<3; i++)
-            {
-                if (i==1) tempScore = m_score1;
-                else { score+="-"; tempScore = m_score2;}
-                switch(tempScore)
-                {
-                    case 0:
-                        score+="Love";
-                        break;
-                    case 1:
-                        score+="Fifteen";
-                        break;
-                    case 2:
-                        score+="Thirty";
-                        break;
-                    case 3:
-                        score+="Forty";
-                        break;
+        StringBuilder score = new StringBuilder();
+        if (player1Score == player2Score) {
+            final String[] scoreArray = new String[]{"Love-All", "Fifteen-All", "Thirty-All", "Deuce"};
+            score.append(switch (player1Score) {
+                case 0 -> scoreArray[0];
+                case 1 -> scoreArray[1];
+                case 2 -> scoreArray[2];
+                default -> scoreArray[3];
+            });
+        } else if (player1Score >= 4 || player2Score >= 4) {
+            int minusResult = player1Score - player2Score;
+            String avantageText = "Advantage ";
+            String winText = "Win for ";
+
+            if (minusResult == 1)
+                score.append(avantageText).append(player1Name);
+            else if (minusResult == -1)
+                score.append(avantageText).append(player2Name);
+            else if (minusResult >= 2)
+                score.append(winText).append(player1Name);
+            else
+                score.append(winText).append(player2Name);
+        } else {
+            final String[] scoreArray = new String[]{"Love", "Fifteen", "Thirty", "Forty"};
+            for (int i = 1; i <= 2; i++) {
+                if (i == 2)
+                    score.append("-");
+                int tempScore = (i == 1) ? player1Score : player2Score;
+                switch (tempScore) {
+                    case 0 -> score.append(scoreArray[0]);
+                    case 1 -> score.append(scoreArray[1]);
+                    case 2 -> score.append(scoreArray[2]);
+                    case 3 -> score.append(scoreArray[3]);
                 }
             }
         }
-        return score;
+        return score.toString();
+    }
+
+    public void wonPoint(String playerName) {
+        if (playerName.equals("player1"))
+            player1Score += 1;
+        if (playerName.equals("player2"))
+            player2Score += 1;
     }
 }

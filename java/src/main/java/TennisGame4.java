@@ -10,7 +10,7 @@ public class TennisGame4 implements TennisGame {
         this.receiver = player2;
     }
 
-    @java.lang.Override
+    @Override
     public void wonPoint(String playerName) {
         if (server.equals(playerName))
             this.serverScore += 1;
@@ -18,7 +18,7 @@ public class TennisGame4 implements TennisGame {
             this.receiverScore += 1;
     }
 
-    @java.lang.Override
+    @Override
     public String getScore() {
         TennisResult result = new Deuce(
                 this, new GameServer(
@@ -100,8 +100,9 @@ class GameServer implements ResultProvider {
 
     @Override
     public TennisResult getResult() {
+        String winText = "Win for ";
         if (game.serverHasWon())
-            return new TennisResult("Win for " + game.server, "");
+            return new TennisResult(winText + game.server, "");
         return this.nextResult.getResult();
     }
 }
@@ -117,8 +118,9 @@ class GameReceiver implements ResultProvider {
 
     @Override
     public TennisResult getResult() {
+        String winText = "Win for ";
         if (game.receiverHasWon())
-            return new TennisResult("Win for " + game.receiver, "");
+            return new TennisResult(winText + game.receiver, "");
         return this.nextResult.getResult();
     }
 }
@@ -134,8 +136,9 @@ class AdvantageServer implements ResultProvider {
 
     @Override
     public TennisResult getResult() {
+        String advantageText = "Advantage ";
         if (game.serverHasAdvantage())
-            return new TennisResult("Advantage " + game.server, "");
+            return new TennisResult(advantageText + game.server, "");
         return this.nextResult.getResult();
     }
 }
@@ -152,8 +155,9 @@ class AdvantageReceiver implements ResultProvider {
 
     @Override
     public TennisResult getResult() {
+        String advantageText = "Advantage ";
         if (game.receiverHasAdvantage())
-            return new TennisResult("Advantage " + game.receiver, "");
+            return new TennisResult(advantageText + game.receiver, "");
         return this.nextResult.getResult();
     }
 }

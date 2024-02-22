@@ -3,10 +3,8 @@ import java.util.Map;
 
 public class TennisGame5 implements TennisGame {
 
-    private final String player1Name;
-    private final String player2Name;
-    private int player1Score;
-    private int player2Score;
+    private String player1Name, player2Name;
+    private int player1Score, player2Score;
 
     public TennisGame5(String player1Name, String player2Name) {
         this.player1Name = player1Name;
@@ -25,12 +23,10 @@ public class TennisGame5 implements TennisGame {
 
     @Override
     public String getScore() {
-        int p1 = player1Score;
-        int p2 = player2Score;
 
-        while (p1 > 4 || p2 > 4) {
-            p1--;
-            p2--;
+        while (player1Score > 4 || player2Score > 4) {
+            player1Score--;
+            player2Score--;
         }
 
         var lookup = new HashMap<Map.Entry, String>();
@@ -60,7 +56,7 @@ public class TennisGame5 implements TennisGame {
         lookup.put(Map.entry(4, 3), "Advantage player1");
         lookup.put(Map.entry(4, 4), "Deuce");
 
-        var entry = Map.entry(p1, p2);
+        var entry = Map.entry(player1Score, player2Score);
         if (lookup.containsKey(entry)) {
             return lookup.get(entry);
         } else {

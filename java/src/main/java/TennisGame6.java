@@ -1,8 +1,6 @@
 public class TennisGame6 implements TennisGame {
-    private final String player1Name;
-    private final String player2Name;
-    private int player1Score;
-    private int player2Score;
+    private String player1Name, player2Name;
+    private int player1Score, player2Score;
 
     public TennisGame6(String player1Name, String player2Name) {
         this.player1Name = player1Name;
@@ -15,78 +13,60 @@ public class TennisGame6 implements TennisGame {
             player1Score++;
         else
             player2Score++;
-
     }
 
     public String getScore()
     {
-        String result;
+        String score1, score2, result, endGameScore, regularScore, tieScore;
+        String advantageText = "Advantage ";
+        String winText = "Win for ";
+        final String[] arrayScore = new String[]{"Love-All", "Fifteen-All", "Thirty-All","Deuce"};
 
         if (player1Score == player2Score)
         {
-            // tie score
-            String tieScore;
-            switch (player1Score)
-            {
-                case 0:
-                    tieScore = "Love-All";
-                    break;
-                case 1:
-                    tieScore = "Fifteen-All";
-                    break;
-                case 2:
-                    tieScore = "Thirty-All";
-                    break;
-                default:
-                    tieScore = "Deuce";
-                    break;
-            }
+            tieScore = switch (player1Score) {
+                case 0 -> arrayScore[0];
+                case 1 -> arrayScore[1];
+                case 2 -> arrayScore[2];
+                default -> arrayScore[3];
+            };
 
             result = tieScore;
         }
         else if (player1Score >= 4 || player2Score >= 4)
         {
             // end-game score
-            String endGameScore;
-
             if (player1Score - player2Score == 1) {
-                endGameScore = "Advantage " + player1Name;
+                endGameScore = advantageText + player1Name;
             } else if (player1Score - player2Score == -1) {
-                endGameScore = "Advantage " + player2Name;
+                endGameScore = advantageText + player2Name;
             } else if (player1Score - player2Score >= 2) {
-                endGameScore = "Win for " + player1Name;
+                endGameScore = winText + player1Name;
             } else {
-                endGameScore = "Win for " + player2Name;
+                endGameScore = winText + player2Name;
             }
 
             result = endGameScore;
         }
         else
         {
-            // regular score
-            String regularScore;
-
-            String score1 =  switch (player1Score)
-            {
-                case 0 -> "Love";
-                case 1 -> "Fifteen";
-                case 2 -> "Thirty";
-                default -> "Forty";
-            };
-
-            var score2 =  switch (player2Score)
-            {
-                case 0 -> "Love";
-                case 1 -> "Fifteen";
-                case 2 -> "Thirty";
-                default -> "Forty";
-            };
-
+            score1 = getScoreString(player1Score);
+            score2 = getScoreString(player2Score);
             regularScore = score1 + "-" + score2;
 
             result = regularScore;
         }
 
         return result;
+    }
+    // Méthode pour obtenir score en fonction du score du joueur
+    private String getScoreString(int playerScore) {
+        final String[] arrayScore = new String[]{"Love", "Fifteen", "Thirty","Forty"};
+        return switch (playerScore) {
+            case 0 -> arrayScore[0];
+            case 1 -> arrayScore[1];
+            case 2 -> arrayScore[2];
+            default -> arrayScore[3];
+        };
     }
 }
